@@ -1,0 +1,367 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Desafio CAJU",
+        "author": "Henrique Santos",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:9000",
+            "description": "Servidor Local"
+        }
+    ],
+    "tags": [
+        "transactions",
+        "reports",
+        "accounts"
+    ],
+    "paths": {
+        "/transactions": {
+            "post": {
+                "tags": [
+                    "transactions"
+                ],
+                "summary": "Executa transação",
+                "requestBody": {
+                    "description": "Dados da transação",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "account": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "totalAmount": {
+                                        "type": "number",
+                                        "format": "double",
+                                        "example": 100.00
+                                    },
+                                    "mcc": {
+                                        "type": "string",
+                                        "example": "5811"
+                                    },
+                                    "merchant": {
+                                        "type": "string",
+                                        "example": "UBER TRIP                   SAO PAULO BR"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Transação criada com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro de requisição"
+                    }
+                }
+            }
+        },
+        "/reports/transactions/{accountId}": {
+            "get": {
+                "tags": [
+                    "reports"
+                ],
+                "summary": "Buscar todas as transações de uma única conta",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "accountId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "start",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2025-01-12"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "end",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2025-01-14"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de transações retornada com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro de requisição"
+                    }
+                }
+            }
+        },
+        "/reports/last-transaction": {
+            "get": {
+                "tags": [
+                    "reports"
+                ],
+                "summary": "Buscar a última transação aprovada de um mercador",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "merchant",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "uber eats"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Última transação encontrada"
+                    },
+                    "400": {
+                        "description": "Erro de requisição"
+                    }
+                }
+            }
+        },
+        "/reports/transactions": {
+            "get": {
+                "tags": [
+                    "reports"
+                ],
+                "summary": "Buscar todas as transações por periodo",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "start",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2025-01-12"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "end",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2025-01-14"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de transações retornada com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro de requisição"
+                    }
+                }
+            }
+        },
+        "/accounts/{accountId}": {
+            "get": {
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "Buscar uma conta",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "accountId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Conta encontrada"
+                    },
+                    "400": {
+                        "description": "Erro de requisição"
+                    }
+                }
+            }
+        },
+        "/accounts/list": {
+            "get": {
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "Lista de contas",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "skip",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 0
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "take",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de contas retornada com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro de requisição"
+                    }
+                }
+            }
+        },
+        "/accounts": {
+            "post": {
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "Criar uma nova conta",
+                "requestBody": {
+                    "description": "Dados da nova conta",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "HRQ2"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Conta criada com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro de requisição"
+                    }
+                }
+            }
+        },
+        "/accounts/update-balance": {
+            "patch": {
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "Atualizar o saldo de uma conta",
+                "requestBody": {
+                    "description": "Dados para atualizar o saldo",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "accountNumber": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "amountMeal": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 500.00
+                                    },
+                                    "amountFood": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 700.00
+                                    },
+                                    "amountCash": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 100.00
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Saldo atualizado com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro de requisição"
+                    }
+                }
+            }
+        },
+        "/accounts/add-balance": {
+            "patch": {
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "Adicionar saldo a uma conta",
+                "requestBody": {
+                    "description": "Dados para adicionar saldo",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "accountNumber": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "amountMeal": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 132.55
+                                    },
+                                    "amountFood": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 700.27
+                                    },
+                                    "amountCash": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 100.23
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Saldo adicionado com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro de requisição"
+                    }
+                }
+            }
+        }
+    }
+}

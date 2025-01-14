@@ -1,0 +1,9 @@
+micronaut:
+  rabbitmq:
+    uris:
+      - amqp://guest:guest@rabbitmq:5672  # Usando o nome do serviço 'rabbitmq' como hostname
+    listener:
+      threads: 10
+      retry:
+        max-attempts: 5
+        delay: 1000ms
