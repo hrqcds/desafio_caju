@@ -16,6 +16,8 @@ services:
     depends_on:
       - db_account
       - redis
+      - gateway
+    restart: always
   transaction_service:
     build: ./transaction_service/docker-build
     networks:
@@ -24,6 +26,7 @@ services:
       - redis
       - rabbitmq
       - gateway
+    restart: always
   report_service:
     build: ./report_service/docker-build
     networks:
@@ -32,6 +35,7 @@ services:
       - db_report
       - rabbitmq
       - gateway
+    restart: always
   db_account:
     image: postgres:13-alpine
     environment:
@@ -42,6 +46,7 @@ services:
       - "5432:5432"
     networks:
       - app-network
+    restart: always
   db_report:
     image: postgres:13-alpine
     environment:
@@ -52,6 +57,7 @@ services:
       - "5431:5432"
     networks:
       - app-network
+    restart: always
   redis:
     image: redis:6.0.9-alpine
     ports:
@@ -60,6 +66,7 @@ services:
       - app-network
     volumes:
       - redis-data:/data
+    restart: always
   rabbitmq:
     image: rabbitmq:4.0-management-alpine
     ports:
@@ -67,6 +74,8 @@ services:
       - "15672:15672"
     networks:
       - app-network
+    restart: always
+    
     
 
 networks:

@@ -29,13 +29,17 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
 
-    let count = 0
-    const clear = setInterval(()=>{
-        if (count < 3) {
-            clearInterval(clear)
-        }
+    try {
+        let count = 0
+        const clear = setInterval(() => {
+            if (count < 10) {
+                clearInterval(clear)
+            }
 
-        init_queue()
-        count++
-    }, 10000)
+            init_queue()
+            count++
+        }, 10000)
+    } catch (error) {
+        console.log(error)
+    }
 })
